@@ -58,7 +58,7 @@ const Todolist = () => {
 
         ])
         
-
+        setText()
       }
 
       /* composant headerTodo */
