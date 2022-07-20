@@ -1,13 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Swipe from './components/Swipe'
+import Todolist from './components/Todolist'
 
 const App = () => {
   return (
     <View>
-
-        <Swipe/>
-
+      <Todolist/>
     </View>
   )
 }

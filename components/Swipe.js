@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React from 'react'
-import { ListItem,Icon } from "@rneui/themed";
+import { ListItem } from "@rneui/themed";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 const Swipe = () => {
   return (
@@ -23,7 +25,7 @@ const Swipe = () => {
     />
   )}
 >
-  <Icon name="My Icon" />
+  <Icon name="instagram" />
   <ListItem.Content>
     <ListItem.Title>Hello Swiper</ListItem.Title>
   </ListItem.Content>
