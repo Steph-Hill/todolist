@@ -1,27 +1,14 @@
 import { StyleSheet, Text, View, SafeAreaView,FlatList } from 'react-native'
 import React, { useState } from 'react'
-import { Input,Icon } from "@rneui/themed";
-import { ListItem } from "@rneui/themed";
+import { Input,Icon,ListItem,Button,SpeedDial } from "@rneui/themed";
 
+import Swipe from './Swipe';
+import DialogInput from 'react-native-dialog-input';
 
 
 const initask = [
 
-    {
-        id:1,
-        tache:"Faire à manger pour la petite"
-
-    },
-    {
-        id:2,
-        tache:"Se baigner à la riviere"
-
-    },
-    {
-        id:3,
-        tache:"trouver la petite"
-
-    },
+    
 
 
 
@@ -37,6 +24,13 @@ const Todolist = () => {
     pour la FlatList et l'utilisation de getTask mutable par le temps*/
     const [getTask, setTask]=useState(initask)
 
+    const [open, setOpen] = React.useState(false);
+
+    const [openDialog, setOpenDialog] = React.useState(false);
+
+
+
+
     /* Determine ce que contient l'input */
     
     const textChange = (textValue) => { 
@@ -45,56 +39,42 @@ const Todolist = () => {
         setText(textValue);
      }
 
-     const ajouter = () => { 
+     const ajouter = (textValue) => { 
 
         /* Verifie le contenu du getText avec l'action ajouter */
         console.log(getText);
 
+        if (textValue != "" ) { //controle si le input n'est pas vide pour ajouter
+            
+        
         /*destructure le getTask  */
-        setTask([...getTask,
+        setTask([
             
             {id:getTask.length+1,
-            tache:getText}
-
+            tache:textValue},
+                ...getTask,
         ])
-        
-        setText()
+       /* remise a zero a mon formulaire */ 
+        setText("")
       }
+}
+      const supprimer = (id) => { 
+        
+        console.log('je supprime',id);
 
-      /* composant headerTodo */
+        /* filtre en selectionnant tous les elements différents de l'id cible */
+        const filterTask = getTask.filter(item=>item.id != id);
+
+        console.log(filterTask);
+        
+
+        setTask(filterTask);
+
+       }
+
      
-        const Swipe = () => { 
-            
-
-        return(
-
-        <ListItem.Swipeable
-        leftContent={(reset) => (
-            <Button
-            title="Info"
-            onPress={() => reset()}
-            icon={{ name: 'info', color: 'white' }}
-            buttonStyle={{ minHeight: '100%' }}
-            />
-        )}
-        rightContent={(reset) => (
-            <Button
-            title="Delete"
-            onPress={() => reset()}
-            icon={{ name: 'delete', color: 'white' }}
-            buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
-            />
-        )}
-        >
-        <Icon name="My Icon" />
-        <ListItem.Content>
-            <ListItem.Title>Hello Swiper</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-        </ListItem.Swipeable>
-    )
-
- }
+     
+        
   return (
    
 
@@ -104,25 +84,59 @@ const Todolist = () => {
             <SafeAreaView style={styles.container}>
             <FlatList
                 data={getTask}
-                renderItem={({item})=><Text>{item.tache}</Text>}
+                renderItem={({item})=><Swipe tache={item.tache} id={item.id} SuppCallBack={supprimer}/>}
                 keyExtractor={item => item.id}
+                ListEmptyComponent={()=><Text style={styles.flatText}>tête mulet !  <Icon
+                                                                                            name='sentiment-dissatisfied'
+                                                                                            color={'#FFFFFF'}
+                                                                                        /></Text>}
                 ListHeaderComponent={<Input
-                                    placeholder='INPUT WITH ICON'
+                                    placeholder='Ajout de tâhes'
                                     onChangeText={textChange} // utilise la fonction fléchée textChange
                                     value={getText}
                                     
                                     rightIcon={<Icon
-                                            name='chevron-right'
-                                            size={40}
+                                            name='medical-services'
+                                            size={30}
                                             color='green'
                                             onPress={ajouter}/* Action sur l'icon */
                                                     
-                                    />}
+                                    />
+                                
+                                }
+                                    
             
             
                     />}
             />
+
+                <DialogInput 
+                            backgroundColor='rgba(191, 28, 112, 1)'
+                            isDialogVisible={openDialog}
+                            title={"DialogInput 1"}
+                            message={"Message for DialogInput #1"}
+                            hintInput ={"HINT INPUT"}
+                            submitInput={ (inputText) => {ajouter(inputText)} }
+                            closeDialog={ () => setOpenDialog(!openDialog)}>
+                </DialogInput>
+
+                <SpeedDial 
+                overlayColor='rgba(191, 28, 112, 0)'
+                style={{height:755,
+                                    paddingHorizontal:20,
+                                    }}
+                                    
+                isOpen={open}
+                icon={{ name: 'edit', color: '#fff' }}
+                openIcon={{ name: 'close', color: '#fff'}}
+                onOpen={() => setOpenDialog(!openDialog)}
+                onClose={() => setOpen(!open)}
+                >
+                
+               
+                </SpeedDial>
             </SafeAreaView>
+            
 
    
   )
@@ -130,4 +144,20 @@ const Todolist = () => {
 
 export default Todolist
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+    flatText:{
+        backgroundColor:'red',
+        flex:10,
+        paddingVertical:20,
+        textAlign:'center',
+        fontSize:19,
+        bottom:25,
+        shadowRadius:10
+
+
+
+
+
+    }
+})

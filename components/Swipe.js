@@ -1,39 +1,34 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { ListItem } from "@rneui/themed";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input,Icon,ListItem,Button } from "@rneui/themed";
 
 
-const Swipe = () => {
-  return (
-    <View>
-     <ListItem.Swipeable
-  leftContent={(reset) => (
-    <Button
-      title="Info"
-      onPress={() => reset()}
-      icon={{ name: 'info', color: 'white' }}
-      buttonStyle={{ minHeight: '100%' }}
-    />
-  )}
-  rightContent={(reset) => (
-    <Button
-      title="Delete"
-      onPress={() => reset()}
-      icon={{ name: 'delete', color: 'white' }}
-      buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
-    />
-  )}
+const Swipe = ({tache,id,SuppCallBack}) => { 
+        
+    return(
+
+<ListItem.Swipeable
+
+        rightContent={(reset) => (
+                <Button
+                title="Nettoyage"
+                onPress={()=>SuppCallBack(id)}
+                icon={{ name: 'clean-hands', color: 'white' }}
+                buttonStyle={{ minHeight: '100%', backgroundColor: 'orange' }}
+                />
+        )}
 >
-  <Icon name="instagram" />
-  <ListItem.Content>
-    <ListItem.Title>Hello Swiper</ListItem.Title>
-  </ListItem.Content>
-  <ListItem.Chevron />
+        <Icon name="masks" />
+            <ListItem.Content>
+            <ListItem.Title>{tache}</ListItem.Title>
+            </ListItem.Content>
+<ListItem.Chevron />
 </ListItem.Swipeable>
-    </View>
-  )
-}
+
+    )
+
+
+   }
 
 export default Swipe
 
